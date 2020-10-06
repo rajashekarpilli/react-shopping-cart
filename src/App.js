@@ -1,3 +1,4 @@
+// feature-1
 import React from 'react';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
 
       {/* Footer */}
       <footer>
-        All right is reserved
+        All right is reserved.
       </footer>
     </div>
   );
