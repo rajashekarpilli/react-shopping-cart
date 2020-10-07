@@ -54,12 +54,12 @@ footer{grid-area: footer;background-color: #203040;color: #ffffff;display: flex;
 .form-container li{display: flex;flex-direction: column;padding: 1rem;}
 .form-container li input{padding: 1rem;border: .1rem solid #c0c0c0;}
 
-
-
-
-
-
-
+/* Product Details */
+.product-details{display: flex;flex-wrap: wrap;justify-content: space-between;max-height: 96vh;}
+.product-details img{max-width: 40rem;max-height: 100vh;margin: 0 auto;}
+.product-details-description{flex: 1 1;margin: 1rem;}
+.modal-close{position: absolute;z-index: 1000;right: 1rem;top: 2.5rem;}
+.mb-2{margin-bottom: 1rem;}
 
 
 
