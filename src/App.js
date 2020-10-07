@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Products from './components/Products';
 import Filter from './components/Filter';
+import Cart from './components/Cart';
 import data from './data.json'
 
 function App() {
@@ -9,11 +10,14 @@ function App() {
   const [products, setProducts] = useState([])
   const [size, setSize] = useState([])
   const [sort, setSort] = useState([])
+  const [cartItems, setCartItems] = useState([])
 
+  // useEffect
   useEffect(() => {
     setProducts(data.products)
   }, [])
 
+  // Filter fn
   const filterProducts = (event) => {
     console.log(event.target.value)
     if(event.target.value === "ALL"){
@@ -25,6 +29,7 @@ function App() {
     }
   }
 
+  // Sort fn
   const sortProducts = (event) => {
     console.log(event.target.value)
     const sort = event.target.value
@@ -36,6 +41,29 @@ function App() {
         a._id < b._id ? 1 : -1
       )
     )
+  }
+
+  // Add To Cart Fn
+  const addToCart = (product) => {
+    const newCartItems = cartItems.slice() // Check product existance, add to cart items
+    console.log(newCartItems)
+    let alreadyInCart = false
+    newCartItems.forEach(item => {
+      if(item._id === product._id){
+        item.count++
+        alreadyInCart = true
+      }
+    })
+    if(!alreadyInCart){
+      newCartItems.push({...product, count: 1})
+    }
+    setCartItems(newCartItems)
+  }
+
+  // removeFromCart
+  const removeFromCart = (product) => {
+    const newCartItems = cartItems.slice() // Check product existance, add to cart items
+    setCartItems(newCartItems.filter(x => x._id !== product._id))
   }
 
   return (
@@ -58,9 +86,11 @@ function App() {
               sortProducts={sortProducts} 
               products={products} 
             />
-            <Products products={products} />
+            <Products products={products} addToCart={addToCart} />
           </div>
-          <div className="sidebar">Cart Items</div>
+          <div className="sidebar">
+            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+          </div>
         </div>
       </main>
 
