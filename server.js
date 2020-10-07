@@ -17,10 +17,10 @@ const Product = mongoose.model(
     new mongoose.Schema({
         _id: { type: String, default: shortid.generate },
         title: String,
-        desciption: String,
+        description: String,
         image: String,
         price: Number,
-        availableSizes: [String],
+        availableSizes: [String]
     })
 )
 
@@ -38,6 +38,11 @@ app.post("/api/products", async (req, res) => {
 app.delete("/api/products/:id", async (req, res) => {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id)
     res.send(deletedProduct)
+})
+
+app.get("/api/product/:id", async (req, res) => {
+    const product = await Product.findByIdAndDelete(req.params.id)
+    res.send(product)
 })
 
 const port = process.env.PORT || 5000
