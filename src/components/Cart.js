@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import formatCurrency from '../util'
 import Fade from 'react-reveal/Fade'
+import { removeFromCart } from '../actions/cartActions'
 
 const Cart = ({ cartItems, removeFromCart, placeOrder }) => {
     const [showCheckout, setShowCheckout] = useState(false)
@@ -12,6 +14,11 @@ const Cart = ({ cartItems, removeFromCart, placeOrder }) => {
 
         setCheckout({ ...checkout, [name]: value })
     }
+
+    useEffect(() => {
+        console.log(cartItems)
+        console.log(cartItems.length)
+    }, [])
 
     const createOrder = (e) => {
         e.preventDefault()
@@ -96,4 +103,10 @@ const Cart = ({ cartItems, removeFromCart, placeOrder }) => {
     )
 }
 
-export default Cart
+export default connect(
+    state => ({
+        cartItems: state.cart.cartItems
+    }),{
+    removeFromCart
+}
+)(Cart)
