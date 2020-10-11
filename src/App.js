@@ -7,44 +7,44 @@ import data from './data.json'
 
 function App() {
   // States
-  const [products, setProducts] = useState([])
-  const [size, setSize] = useState([])
-  const [sort, setSort] = useState([])
+  // const [products, setProducts] = useState([])
+  // const [size, setSize] = useState([])
+  // const [sort, setSort] = useState([])
   const [cartItems, setCartItems] = useState(
     localStorage.getItem("cartItems") ?
       JSON.parse(localStorage.getItem("cartItems")) : []
   )
 
   // useEffect
-  useEffect(() => {
-    setProducts(data.products)
-  }, [])
+  // useEffect(() => {
+  //   setProducts(data.products)
+  // }, [])
 
   // Filter fn
-  const filterProducts = (event) => {
-    console.log(event.target.value)
-    if (event.target.value === "ALL") {
-      setSize(event.target.value)
-      setProducts(data.products)
-    } else {
-      setSize(event.target.value)
-      setProducts(data.products.filter(product => product.availableSizes.indexOf(event.target.value) >= 0))
-    }
-  }
+  // const filterProducts = (event) => {
+  //   console.log(event.target.value)
+  //   if (event.target.value === "ALL") {
+  //     setSize(event.target.value)
+  //     setProducts(data.products)
+  //   } else {
+  //     setSize(event.target.value)
+  //     setProducts(data.products.filter(product => product.availableSizes.indexOf(event.target.value) >= 0))
+  //   }
+  // }
 
   // Sort fn
-  const sortProducts = (event) => {
-    console.log(event.target.value)
-    const sort = event.target.value
-    setSort(sort)
-    setProducts(
-      products.slice().sort((a, b) =>
-        sort === "lowest" ? a.price > b.price ? 1 : -1 :
-          sort === "highest" ? a.price < b.price ? 1 : -1 :
-            a._id < b._id ? 1 : -1
-      )
-    )
-  }
+  // const sortProducts = (event) => {
+  //   console.log(event.target.value)
+  //   const sort = event.target.value
+  //   setSort(sort)
+  //   setProducts(
+  //     products.slice().sort((a, b) =>
+  //       sort === "lowest" ? a.price > b.price ? 1 : -1 :
+  //         sort === "highest" ? a.price < b.price ? 1 : -1 :
+  //           a._id < b._id ? 1 : -1
+  //     )
+  //   )
+  // }
 
   // Add To Cart Fn
   const addToCart = (product) => {
@@ -106,15 +106,8 @@ function App() {
       <main>
         <div className="content">
           <div className="main">
-            <Filter
-              count={products.length}
-              size={size}
-              sort={sort}
-              filterProducts={filterProducts}
-              sortProducts={sortProducts}
-              products={products}
-            />
-            <Products products={products} addToCart={addToCart} />
+            <Filter />
+            <Products addToCart={addToCart} />
           </div>
           <div className="sidebar">
             <Cart cartItems={cartItems} removeFromCart={removeFromCart} placeOrder={placeOrder} />
@@ -124,7 +117,7 @@ function App() {
 
       {/* Footer */}
       <footer>
-        All right is reserved.
+        All rights reserved.
       </footer>
     </div>
   );

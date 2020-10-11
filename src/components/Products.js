@@ -84,7 +84,7 @@ const Products = ({ dispatch, loading, hasErrors, products, addToCart }) => {
 
 const mapStateToProps = (state) => ({
     loading: state.products.loading,
-    products: state.products.products,
+    products: state.products.filteredItems,
     hasErrors: state.products.hasErrors,
 })
 
