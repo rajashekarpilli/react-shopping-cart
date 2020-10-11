@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import formatCurrency from '../util'
 import Fade from 'react-reveal/Fade'
 import Zoom from 'react-reveal/Zoom'
 import Modal from 'react-modal'
+import { fetchProducts } from '../actions/productsActions'
 
-const Products = ({ products, addToCart }) => {
+const Products = ({ dispatch, loading, hasErrors, products, addToCart }) => {
     const [product, setProduct] = useState(null)
 
     const openModal = (product) => {
@@ -14,9 +16,17 @@ const Products = ({ products, addToCart }) => {
         setProduct(null)
     }
 
+    // useEffect
+    useEffect(() => {
+        dispatch(fetchProducts())
+    }, [dispatch])
+
     return (
         <div className="products">
             <Fade bottom cascade={true}>
+                { loading ? <div>Loading...</div>
+                : products.length === 0 ? <div>Products not found.</div> 
+                : products.length > 0 ?
                 <ul>
                     {products.map(product => (
                         <li key={product._id}>
@@ -33,6 +43,7 @@ const Products = ({ products, addToCart }) => {
                         </li>
                     ))}
                 </ul>
+                : hasErrors ? <div>Error has occured. Unable to load products. Please try again after sometime.</div> : null}
             </Fade>
 
             {product && (
@@ -71,4 +82,10 @@ const Products = ({ products, addToCart }) => {
     )
 }
 
-export default Products
+const mapStateToProps = (state) => ({
+    loading: state.products.loading,
+    products: state.products.products,
+    hasErrors: state.products.hasErrors,
+})
+
+export default connect(mapStateToProps)(Products)

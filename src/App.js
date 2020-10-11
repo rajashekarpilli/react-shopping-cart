@@ -76,6 +76,24 @@ function App() {
     alert(order.name)
   }
 
+  // Object.assign - to avoid overwrite books property
+  let obj = { name: "Michael", age: 25, books: "" }
+  let array = [
+    { book1: "Telugu", book2: "English" },
+    { book1: "Hindi", book2: "Maths" },
+    { book1: "Science", book2: "Social" }
+  ]
+  let newArray = []
+
+  useEffect(() => {
+    array.map(x => {
+      obj.books = `${x.book1}, ${x.book2}`
+      // return newArray.push(obj) // uncomment and check
+      return newArray.push(Object.assign({}, obj))
+    })
+    console.log(newArray)
+  }, [array, newArray, obj])
+
   return (
     <div className="grid-container">
 
