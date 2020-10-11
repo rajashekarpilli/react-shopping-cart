@@ -5,8 +5,9 @@ import Fade from 'react-reveal/Fade'
 import Zoom from 'react-reveal/Zoom'
 import Modal from 'react-modal'
 import { fetchProducts } from '../actions/productsActions'
+import { addToCart } from '../actions/cartActions'
 
-const Products = ({ dispatch, loading, hasErrors, products, addToCart }) => {
+const Products = ({ loading, hasErrors, products, addToCart, fetchProducts }) => {
     const [product, setProduct] = useState(null)
 
     const openModal = (product) => {
@@ -18,32 +19,32 @@ const Products = ({ dispatch, loading, hasErrors, products, addToCart }) => {
 
     // useEffect
     useEffect(() => {
-        dispatch(fetchProducts())
-    }, [dispatch])
+        fetchProducts()
+    }, [])
 
     return (
         <div className="products">
             <Fade bottom cascade={true}>
-                { loading ? <div>Loading...</div>
-                : products.length === 0 ? <div>Products not found.</div> 
-                : products.length > 0 ?
-                <ul>
-                    {products.map(product => (
-                        <li key={product._id}>
-                            <div className="product">
-                                <a href={"#" + product._id} className="product-link" onClick={() => openModal(product)}>
-                                    <img src={product.image} alt={product.title} />
-                                    <p>{product.title}</p>
-                                </a>
-                                <div className="product-price">
-                                    <div>{formatCurrency(product.price)}</div>
-                                    <button className="button primary" onClick={() => addToCart(product)}>Add To Cart</button>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                : hasErrors ? <div>Error has occured. Unable to load products. Please try again after sometime.</div> : null}
+                {loading ? <div>Loading...</div>
+                    : products.length === 0 ? <div>Products not found.</div>
+                        : products.length > 0 ?
+                            <ul>
+                                {products.map(product => (
+                                    <li key={product._id}>
+                                        <div className="product">
+                                            <a href={"#" + product._id} className="product-link" onClick={() => openModal(product)}>
+                                                <img src={product.image} alt={product.title} />
+                                                <p>{product.title}</p>
+                                            </a>
+                                            <div className="product-price">
+                                                <div>{formatCurrency(product.price)}</div>
+                                                <button className="button primary" onClick={() => addToCart(product)}>Add To Cart</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            : hasErrors ? <div>Error has occured. Unable to load products. Please try again after sometime.</div> : null}
             </Fade>
 
             {product && (
@@ -82,10 +83,14 @@ const Products = ({ dispatch, loading, hasErrors, products, addToCart }) => {
     )
 }
 
-const mapStateToProps = (state) => ({
-    loading: state.products.loading,
-    products: state.products.filteredItems,
-    hasErrors: state.products.hasErrors,
-})
-
-export default connect(mapStateToProps)(Products)
+export default connect(
+    (state) => ({
+        loading: state.products.loading,
+        products: state.products.filteredItems,
+        hasErrors: state.products.hasErrors,
+    }),
+    {
+        fetchProducts,
+        addToCart,
+    }
+)(Products);
